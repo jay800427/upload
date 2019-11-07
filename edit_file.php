@@ -27,7 +27,7 @@ $id=$_GET['id'];
 $sql="select * from files where id='$id'";
 $data=$pdo->query($sql)->fetch();
 ?>
-<form action="edit_file.php" method="post" enctype="multipart/form-data">
+<form action="edit_file.php" method="post" enctype="multipart/form-data"><!--multipart/form-data 。 指定传输数据为二进制类型，比如图片、mp3、文件。-->
 <table>
     <tr>
         <td colspan="2">
