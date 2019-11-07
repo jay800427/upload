@@ -35,6 +35,7 @@
  <form action="upload.php" method="post" enctype="multipart/form-data">
   檔案：<input type="file" name="img"><br><!--可以多筆檔案上傳，但是名稱要更改-->
   說明: <input type="text" name="desc"><br>
+
   <input type="submit" value="上傳">
 </form>
 
@@ -43,6 +44,7 @@
 
 <!----建立一個連結來查看上傳後的圖檔---->  
 <br><br>
+
 <a href="./img/">查看上傳的檔案</a>
 
 
