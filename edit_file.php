@@ -4,17 +4,18 @@ $pdo=new PDO($dsn,"root","");
 if(!empty($_FILES) && $_FILES['file']['error']==0){
     $type=$_FILES['file']['type'];
     $filename=$_FILES['file']['name'];
-    $path="./upload/";
+    $path="./upload/".$filename;
     $updateTime=date("Y-m-d H:i:s");//date("Y-m-d H:i:s")是系統預設時間
+    $note=$_POST['note'];
     $id=$_POST['id'];
-    move_uploaded_file($_FILES['file']['tmp_name'] , $path . $filename);
+    move_uploaded_file($_FILES['file']['tmp_name'] , $path);
     //刪除原本的檔案
     $sql="select * from files where id='$id'";//抓取這張(files)這張表單裡的所有id
     $origin=$pdo->query($sql)->fetch();//定義一個變數($origin)來抓取我要的id
     $origin_file=$origin['path'];//定義一個變數($origin_file)來抓取$origin裡的['path']
     unlink($origin_file);//unlink()刪除檔案
     //更新資料
-    $sql="update files set name='$filename',type='$type',update_time='$updateTime',path='" . $path . $filename . "' where id='$id'";
+    $sql="update files set name='$filename',type='$type',update_time='$updateTime',path='$path',note='$note' where id='$id'";
     $result=$pdo->exec($sql);
     if($result==1){
         echo "更新成功";
@@ -51,8 +52,13 @@ $data=$pdo->query($sql)->fetch();
         <td>create_time</td>
         <td><?=$data['create_time'];?></td>
     </tr>
+    <tr>
+        <td>note</td>
+        <td><?=$data['note'];?></td>
+    </tr>
 </table>
 更新檔案:<input type="file" name="file"><br>
+說明:<input type="text" name="note" value="<?=$data['note'];?>"><br><br>
 <input type="hidden" name="id" value="<?=$data['id'];?>">
 <input type="submit" value="更新">
 </form>

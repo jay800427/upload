@@ -10,11 +10,12 @@
 if(!empty($_FILES)&&$_FILES['file']['error']==0){
     $type=$_FILES['file']['type'];//上傳檔案的類型
     $filename=$_FILES['file']['name'];//上傳檔案的名子
-    $path="./upload/";
-    move_uploaded_file($_FILES['file']['tmp_name'],$path .$filename);//搬移檔案到該file的路徑底下
+    $note=$_POST['note'];
+    $path="./upload/".$filename;
+    move_uploaded_file($_FILES['file']['tmp_name'],$path);//搬移檔案到該file的路徑底下
 
    
-    $sql="insert into files( `name`, `type`, `path`) values ('$filename','$type','".$path.$filename."')";
+    $sql="insert into files( `name`, `type`, `path`,`note`) values ('$filename','$type','$path','$note')";
    $result=$pdo->exec($sql);
    if($result==1){
        echo "上傳成功";
@@ -47,6 +48,7 @@ if(!empty($_FILES)&&$_FILES['file']['error']==0){
 <!----建立上傳檔案表單及相關的檔案資訊存入資料表機制----->
 <form action="manage.php" method="post" enctype="multipart/form-data"><!--multipart/form-data 。 指定传输数据为二进制类型，比如图片、mp3、文件。-->
   檔案：<input type="file" name="file"><br>
+  說明：<input type="text" name="note"><br>
   <input type="submit" value="上傳">
 </form>
 
@@ -57,8 +59,10 @@ if(!empty($_FILES)&&$_FILES['file']['error']==0){
         <td>id</td>
         <td>name</td>
         <td>type</td>
+        <td>縮圖</td>
         <td>path</td>
         <td>create time</td>
+        <td>note</td>
         <td>操作</td>
     </tr>
 
@@ -71,8 +75,10 @@ if(!empty($_FILES)&&$_FILES['file']['error']==0){
         <td><?=$file['id'];?></td><!--給了一個變數叫$file並抓取資料庫裡的id-->
         <td><?=$file['name'];?></td>
         <td><?=$file['type'];?></td>
+        <td><img src="<?=$file['path'];?>" style="width:100px;height:50px;"></td>
         <td><?=$file['path'];?></td>
         <td><?=$file['create_time'];?></td>
+        <td><?=$file['note'];?></td>
         <td>
             <a href="edit_file.php?id=<?=$file['id'];?>">更新檔案</a>
             <a href="del_file.php?id=<?=$file['id'];?>">刪除檔案</a>
